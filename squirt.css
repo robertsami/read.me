@@ -34,9 +34,9 @@
 .sq .modal {
   position: fixed;
   left: 0;
-  top: 20%;
+  top: 0%;
   width: 100%;
-  height: 399px;
+  height: 199px;
 
   font-size: 48px;
   background-color: #F6F6F6;
@@ -91,7 +91,7 @@
   font-weight: bold;
   position: absolute;
   left: 80%;
-  height: 100%;
+  height: 50%;
   width: 20%;
   top: 0;
   z-index: 1;
@@ -104,18 +104,18 @@
 .sq .control {
   cursor: pointer;
   margin: 0;
-  background-color: rgba(255, 255, 255, .68);
-  height: 74px;
-  padding-top: 57px;
+  background-color: rgba(25, 60, 255, .68);
+  height: 37px;
+  padding-top: 27px;
   margin-bottom: 3px;
 }
 
 .sq .control:hover {
-  background-color: rgba(255, 255, 255, .9);
+  background-color: rgba(25, 200, 255, .9);
 }
 
 .sq .control:active {
-  background-color: rgba(230, 230, 255, 1);
+  background-color: rgba(20, 255, 255, 1);
 }
 
 .sq .controls a, select{
@@ -185,6 +185,34 @@
   padding-right: .7em;
   padding-bottom: .7em;
 }
+/*Karaoke stuff*/
+.sq .karaoke {
+  position: fixed;
+  left: 0;
+  top: 199px;
+  width: 100%;
+  height: 100%;
+
+  font-size: 24px;
+  background-color: #2d2d2d;
+  color: #2d2d2d;
+  font-family: Georgia, serif;
+
+  cursor: none;
+}
+.sq .karaoke-title {
+  color: #f4f4f4;
+  font-size: 1em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-right: .7em;
+  padding-bottom: .7em;
+}
+
+.sq .karaokeword {
+    font-size: .2em;
+ }
 
 
 /* Mobile */
@@ -196,7 +224,7 @@ and (orientation: landscape){
  .sq .modal {
    width: 100%;
    height: 204px;
-   top: 20%;
+   top: 0%;
  } 
 
  .sq .focus-indicator-gap {
@@ -234,8 +262,8 @@ and (min-device-width : 320px)
 and (max-device-width : 568px) 
 and (orientation: portrait){
  .sq .modal {
-   height: 404px;
-   top: 20%;
+   height: 204px;
+   top: 0%;
  } 
 
  .sq .reader {
@@ -279,5 +307,7 @@ and (orientation: portrait){
  .sq .word {
    font-size: .6em;
  }
+
+
 }
 

@@ -26,6 +26,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       getText(read);
     };
 
+    //GRABS THE TEXT
     function getText(read){
       // text source: demo
       if(window.squirtText) return read(window.squirtText);
@@ -442,6 +443,12 @@ sq.host =  window.location.search.match('sq-dev') ?
         updateIcon();
       })();
     })(controls);
+
+    (function makeKaraoke() {
+        var karaoke = makeEl('div', {'class': 'sq karaoke'}, squirt);
+        var karaoke_title = makeDiv({'class': 'karaoke-title'}, karaoke);
+          karaoke_title.innerText = "Full Text!!!!!!!!!!";
+    })();
   };
 
   // utilites
