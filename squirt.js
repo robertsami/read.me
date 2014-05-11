@@ -454,20 +454,13 @@ sq.host =  window.location.search.match('sq-dev') ?
         // var handler;
         function readabilityReadyKaraoke(){
           readability.hello();
-
           console.log(readability.grabArticle());
+          makeEl('div', readability.grabArticle(), karaoke);
         };
 
         on('readability.ready', readabilityReadyKaraoke);
 
-        // if(window.readability) {
-        //   return readabilityReady();
-        // } else {
-        //   makeEl('script', {
-        //     src: sq.host + 'readability.js'
-        //   }, document.head);
-        //   handler = on('readability.ready', readabilityReady);
-        // }
+        
         
     })();
   };
