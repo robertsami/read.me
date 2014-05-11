@@ -1,4 +1,10 @@
 var sq = window.sq;
+var article_spot = -1;
+//THIS IS A GLOBAL COPY OF AN ANONYMOUS DATA 
+//STRUCTURE DO EVERYTHING THAT NODES DOES
+var nodesCOPY;
+var karaoke_text;
+
 sq.version = '0.0.1';
 sq.host =  window.location.search.match('sq-dev') ?
   document.scripts[document.scripts.length - 1].src.match(/\/\/.*\//)[0]
@@ -67,8 +73,30 @@ sq.host =  window.location.search.match('sq-dev') ?
     function incrememntNodeIdx(increment){
       var ret = nodeIdx;
       nodeIdx += increment || 1;
+
       nodeIdx = Math.max(0, nodeIdx);
-      prerender();
+      prerender();  
+
+      //get the word to highlight
+      var a = document.getElementById("karaoke-text").children[article_spot];
+      //scroll a little if necessary
+      if (article_spot > 5 && article_spot % 5 == 0) {
+        var b = document.getElementById("karaoke-text").getAttribute('style').replace(/\D/g,'')
+        b = (parseInt(b, 10)+2);
+        b = "bottom:" + b + "px";
+        document.getElementById("karaoke-text").setAttribute('style', b);
+
+        // var elem = document.getElementById("karaoke-text").getAttribute();
+        //   console.log(elem.style.bottom);
+        //   elem.style.bottom = parseInt(elem.style.bottom, 10) + 3 + "px";
+        //   console.log(elem.style.bottom);
+        
+      }
+      //console.log(a);
+      //a.style.color = "#FFFF66";
+      if (typeof a != "undefined")
+        a.setAttribute('class', 'karaoke-highlighted');
+
       return ret;
     };
 
@@ -123,11 +151,14 @@ sq.host =  window.location.search.match('sq-dev') ?
       Keen.addEvent('pause');
     };
 
+
+
     function play(e){
       sq.paused = false;
       dispatch('squirt.pause.after');
       document.querySelector('.sq .wpm-selector').style.display = 'none'
       nextNode(e.jumped);
+
       e.notForKeen === undefined && Keen.addEvent('play');
     };
 
@@ -137,6 +168,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       if(toRender == null) return;
       prerenderer.appendChild(toRender);
       nodes[nodeIdx].center();
+
     }
 
     function finalWord(){
@@ -154,6 +186,9 @@ sq.host =  window.location.search.match('sq-dev') ?
 
     var delay, jumped, nextIdx;
     function nextNode(jumped) {
+      article_spot = article_spot + 1;
+
+
       lastNode && lastNode.remove();
 
       nextIdx = incrememntNodeIdx();
@@ -230,6 +265,8 @@ sq.host =  window.location.search.match('sq-dev') ?
       if(!text) return readabilityFail();
 
       nodes = textToNodes(text);
+      //NODE COPY THIS IS BAD
+      nodesCOPY = textToNodes(text);
       nodeIdx = 0;
 
       prerender();
@@ -446,19 +483,50 @@ sq.host =  window.location.search.match('sq-dev') ?
 
     (function makeKaraoke() {
         var karaoke = makeEl('div', {'class': 'sq karaoke'}, squirt);
-        var karaoke_title = makeDiv({'class': 'karaoke-title'}, karaoke);
-          karaoke_title.innerText = "Full Text!!!!!!!!!!";
-        
+        // var karaoke_title = makeDiv({'class': 'karaoke-title'}, karaoke);
+        //   karaoke_title.innerText = "Full Text!!!!!!!!!!";
+        karaoke_text = makeDiv({'class': 'karaoke-textbox', 'id': 'karaoke-text', 'style': 'bottom:0px'}, karaoke);        
 
 
         // var handler;
         function readabilityReadyKaraoke(){
           readability.hello();
-          console.log(readability.grabArticle());
-          makeEl('div', readability.grabArticle(), karaoke);
+          //var a = readability.grabArticle();
+          //karaoke_articleText.innerText = a.innerText.trim();
+          
+          var nodesCOPYhandler = function nodesCOPYReady() {
+            for (var i = 0; i < nodesCOPY.length; i++) {
+              //nodesCOPY[i].textContent += " ";
+              var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-word'}, karaoke_text);
+              karaoke_articleWord.setAttribute('id', "karaoke_word" + i);
+
+              karaoke_articleWord.textContent = nodesCOPY[i].textContent;
+            };
+          }
+           on('squirt.play', nodesCOPYhandler);
+          //nodesCOPYhandler();
+
+          //GO THROUGH NODE COPY LIST AND GET THE COMPLETE TEXT
         };
 
         on('readability.ready', readabilityReadyKaraoke);
+
+
+
+
+  // function makeEl(type, attrs, parent) {
+  //   var el = document.createElement(type);
+  //   for(var k in attrs){
+  //     if(!attrs.hasOwnProperty(k)) continue;
+  //     el.setAttribute(k, attrs[k]);
+  //   }
+  //   parent && parent.appendChild(el);
+  //   return el;
+  // };
+
+
+
+
 
         
         

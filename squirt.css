@@ -22,7 +22,7 @@
 }
 
 .sq-obscure {
-  background-color: rgba(255, 255, 255, .8);
+  background-color: rgba(255, 255, 255, .41);
   position: fixed;
   width: 100%;
   height: 100%;
@@ -209,9 +209,26 @@
   padding-right: .7em;
   padding-bottom: .7em;
 }
+.sq .karaoke-textbox {
+  position: relative;
+  margin: 60px;
+  bottom: 0px;
+}
 
-.sq .karaokeword {
-    font-size: .2em;
+.sq .karaoke-word {
+    font-size: .8em;
+    color: #FFF;
+    top: 1em;
+    float: left;
+    padding-right: 4px;
+ }
+
+ .karaoke-highlighted {
+    color:#FFFF66;
+    font-size: .8em;
+    top: 1em;
+    float: left;
+    padding-right: 4px;
  }
 
 
