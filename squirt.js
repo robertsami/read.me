@@ -38,7 +38,7 @@ sq.host =  window.location.search.match('sq-dev') ?
         for (var i = 0, len = selection.rangeCount; i < len; ++i) {
           container.appendChild(selection.getRangeAt(i).cloneContents());
         }
-        return read(container.textContent);
+        return read();
       }
 
       // text source: readability
@@ -448,6 +448,27 @@ sq.host =  window.location.search.match('sq-dev') ?
         var karaoke = makeEl('div', {'class': 'sq karaoke'}, squirt);
         var karaoke_title = makeDiv({'class': 'karaoke-title'}, karaoke);
           karaoke_title.innerText = "Full Text!!!!!!!!!!";
+        
+
+
+        // var handler;
+        function readabilityReadyKaraoke(){
+          readability.hello();
+
+          console.log(readability.grabArticle());
+        };
+
+        on('readability.ready', readabilityReadyKaraoke);
+
+        // if(window.readability) {
+        //   return readabilityReady();
+        // } else {
+        //   makeEl('script', {
+        //     src: sq.host + 'readability.js'
+        //   }, document.head);
+        //   handler = on('readability.ready', readabilityReady);
+        // }
+        
     })();
   };
 

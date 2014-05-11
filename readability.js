@@ -481,6 +481,9 @@ var readability = {
     return articleContent;
   },
 
+  hello: function() {
+    console.log("yo!!");
+  },
   // with line breaks between paragraphs, and all the nice things
   grabArticleText: function extract(node){
     node = node || readability.grabArticle();
