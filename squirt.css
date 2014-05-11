@@ -22,7 +22,7 @@
 }
 
 .sq-obscure {
-  background-color: rgba(255, 255, 255, .41);
+  background-color: rgba(255, 255, 255, 0);
   position: fixed;
   width: 100%;
   height: 100%;
@@ -197,7 +197,7 @@
   background-color: #2d2d2d;
   color: #2d2d2d;
   font-family: Georgia, serif;
-
+  z-index: 999999999;
   cursor: none;
 }
 .sq .karaoke-title {
@@ -222,9 +222,23 @@
     float: left;
     padding-right: 4px;
  }
+ .sq .karaoke-word:active {
+    font-size: .8em;
+    color: #FF6666;
+    top: 1em;
+    float: left;
+    padding-right: 4px;
+ }
 
  .karaoke-highlighted {
     color:#FFFF66;
+    font-size: .8em;
+    top: 1em;
+    float: left;
+    padding-right: 4px;
+ }
+  .karaoke-highlighted:active {
+    color: #FF6666;
     font-size: .8em;
     top: 1em;
     float: left;
