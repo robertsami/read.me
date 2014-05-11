@@ -221,6 +221,8 @@
     top: 1em;
     float: left;
     padding-right: 4px;
+    padding-bottom: 3px;
+
  }
  .sq .karaoke-word:active {
     font-size: .8em;
@@ -228,6 +230,7 @@
     top: 1em;
     float: left;
     padding-right: 4px;
+    padding-bottom: 3px;
  }
 
  .karaoke-highlighted {
@@ -236,6 +239,8 @@
     top: 1em;
     float: left;
     padding-right: 4px;
+    padding-bottom: 3px;
+
  }
   .karaoke-highlighted:active {
     color: #FF6666;
@@ -243,6 +248,7 @@
     top: 1em;
     float: left;
     padding-right: 4px;
+    padding-bottom: 3px;
  }
 
 
