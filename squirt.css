@@ -28,7 +28,6 @@
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 9999999999999999999999;
 }
 
 .sq .modal {
@@ -44,7 +43,6 @@
   font-family: Georgia, serif;
 
   box-shadow: 0 2px 10px rgba(0,0,0,.4);
-  z-index: 99999999999999999999999;
 
   cursor: none;
 }
@@ -197,7 +195,6 @@
   background-color: #2d2d2d;
   color: #2d2d2d;
   font-family: Georgia, serif;
-  z-index: 999999999;
   cursor: none;
 }
 .sq .karaoke-title {
