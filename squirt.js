@@ -548,6 +548,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
           var nodesCOPYhandler = function nodesCOPYReady() {
             var karaoke_paragraph = makeEl('div', {'class': 'sq karaoke-paragraph'}, karaoke_text);
             for (var i = 0; i < nodesCOPY.length; i++) {
+              // TODO: we should fix the way id's are assigned to not skip one for new paragraphs
               //nodesCOPY[i].textContent += " ";
               if (nodesCOPY[i].textContent.localeCompare('\n') == 0) {
                 karaoke_paragraph = makeEl('div', {'class': 'sq karaoke-paragraph'}, karaoke_text);
