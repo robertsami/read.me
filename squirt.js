@@ -104,22 +104,25 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       //get the word to highlight
       var a = getKaroakeWordEl(article_spot);
+
       // scroll a little if necessary. arbitrarily check only after fifth word
       // condition >= 1 is necessary because we set height later
       var id = "karaoke_word" + article_spot;
       var offset = $("#"+id).offset();
+
       if (lastNodeHeight != -1 && offset !== undefined) {
-        console.log("hello");
         var change = offset["top"] - lastNodeHeight;
+
+        // if there is any scrolling to be done, do it
         if (change > 0) {
-          console.log("change " + change);
           var b = document.getElementById("karaoke-text").getAttribute('style').replace(/\D/g,'');
           b = (parseInt(b, 10)+change);
           b = "bottom:" + b + "px";
           document.getElementById("karaoke-text").setAttribute('style', b);
         }
       }
-
+      // set the lastNodeHeight if there is an offset defined ie we aren't in a new paragraph
+      // long term we should fix the sequence numbers of id's so that this doesn't happen
       if (offset !== undefined) {
         lastNodeHeight = offset["top"];
       }
