@@ -104,7 +104,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       //get the word to highlight
       var aIndex = getKaroakeWordIndex(article_spot);
-      var id = "karaoke_word" + aIndex;
+      var id = "karaoke_word" + article_spot;
       var a = $("#"+id);
 
       // scroll a little if necessary. arbitrarily check only after fifth word
@@ -558,23 +558,24 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
           
           var nodesCOPYhandler = function nodesCOPYReady() {
             var karaoke_paragraph = makeEl('div', {'class': 'sq karaoke-paragraph'}, karaoke_text);
+            var skippedIds = 0;
             for (var i = 0; i < nodesCOPY.length; i++) {
               // TODO: we should fix the way id's are assigned to not skip one for new paragraphs
               //nodesCOPY[i].textContent += " ";
               if (nodesCOPY[i].textContent.localeCompare('\n') == 0) {
                 karaoke_paragraph = makeEl('div', {'class': 'sq karaoke-paragraph'}, karaoke_text);
                 console.log("adpsfoanspd");
-
+                skippedIds += 1;
               }
               else if (i == 0) {
                 var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-highlighted'}, karaoke_paragraph);
-                karaoke_articleWord.setAttribute('id', "karaoke_word" + i);
+                karaoke_articleWord.setAttribute('id', "karaoke_word" + (i - skippedIds));
 
                 karaoke_articleWord.textContent = nodesCOPY[i].textContent;
               }
               else {
                 var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-word'}, karaoke_paragraph);
-                karaoke_articleWord.setAttribute('id', "karaoke_word" + i);
+                karaoke_articleWord.setAttribute('id', "karaoke_word" + (i - skippedIds));
 
                 karaoke_articleWord.textContent = nodesCOPY[i].textContent;
               }
