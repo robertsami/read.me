@@ -11,6 +11,12 @@ sq.host =  window.location.search.match('sq-dev') ?
   document.scripts[document.scripts.length - 1].src.match(/\/\/.*\//)[0]
         : '//www.princeton.edu/~nagakura/';
 
+// include jQuery
+var jQuery = document.createElement('script');
+jQuery.src = '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js';
+jQuery.type = 'text/javascript';
+document.getElementsByTagName('head')[0].appendChild(jQuery);
+
 (function(Keen){
   Keen.addEvent('load');
 
@@ -69,6 +75,7 @@ sq.host =  window.location.search.match('sq-dev') ?
     var nodeIdx,
         lastNode,
         nextNodeTimeoutId;
+    var lastNodeHeight = -1;
 
     function getKaroakeWordEl(article_spot) {
       var numWordsSeen = 0;
@@ -87,24 +94,36 @@ sq.host =  window.location.search.match('sq-dev') ?
       return paragraphEl.children[article_spot - (numWordsSeen - lastNumWordsSeen)];
     }
 
+
     function incrememntNodeIdx(increment){
       var ret = nodeIdx;
       nodeIdx += increment || 1;
 
       nodeIdx = Math.max(0, nodeIdx);
-      prerender();  
+      prerender();
 
       //get the word to highlight
       var a = getKaroakeWordEl(article_spot);
-      //scroll a little if necessary
-      if (article_spot > 5 && article_spot % 5 == 0) {
-        var b = document.getElementById("karaoke-text").getAttribute('style').replace(/\D/g,'')
-        b = (parseInt(b, 10)+3);
-        b = "bottom:" + b + "px";
-        document.getElementById("karaoke-text").setAttribute('style', b);
-
-        
+      // scroll a little if necessary. arbitrarily check only after fifth word
+      // condition >= 1 is necessary because we set height later
+      var id = "karaoke_word" + article_spot;
+      var offset = $("#"+id).offset();
+      if (lastNodeHeight != -1 && offset !== undefined) {
+        console.log("hello");
+        var change = offset["top"] - lastNodeHeight;
+        if (change > 0) {
+          console.log("change " + change);
+          var b = document.getElementById("karaoke-text").getAttribute('style').replace(/\D/g,'');
+          b = (parseInt(b, 10)+change);
+          b = "bottom:" + b + "px";
+          document.getElementById("karaoke-text").setAttribute('style', b);
+        }
       }
+
+      if (offset !== undefined) {
+        lastNodeHeight = offset["top"];
+      }
+
       //a.style.color = "#FFFF66";
       if (typeof a != "undefined")
         a.setAttribute('class', 'karaoke-highlighted');
