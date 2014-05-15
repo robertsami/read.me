@@ -568,6 +568,8 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
                 karaoke_articleWord.textContent = nodesCOPY[i].textContent;
               }
             };
+
+            // display first word
           }
            on('squirt.play', nodesCOPYhandler);
           //nodesCOPYhandler();
