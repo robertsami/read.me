@@ -77,7 +77,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         nextNodeTimeoutId;
     var lastNodeHeight = -1;
 
-    function getKaroakeWordEl(article_spot) {
+    function getKaroakeWordIndex(article_spot) {
       var numWordsSeen = 0;
       var paragraphIndex = 0;
       var lastNumWordsSeen = 0;
@@ -91,7 +91,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       var paragraphEl = document.getElementById("karaoke-text").children[paragraphIndex - 1];
 
-      return paragraphEl.children[article_spot - (numWordsSeen - lastNumWordsSeen)];
+      return article_spot - (numWordsSeen - lastNumWordsSeen);
     }
 
 
@@ -103,13 +103,14 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       prerender();
 
       //get the word to highlight
-      var a = getKaroakeWordEl(article_spot);
+      var aIndex = getKaroakeWordIndex(article_spot);
+      var id = "karaoke_word" + aIndex;
+      var a = $("#"+id);
 
       // scroll a little if necessary. arbitrarily check only after fifth word
       // because sometimes weird change shit happens in the first few words
       // condition >= 1 is necessary because we set height later
-      var id = "karaoke_word" + article_spot;
-      var offset = $("#"+id).offset();
+      var offset = a.offset();
 
       if (article_spot > 5 && lastNodeHeight != -1 && offset !== undefined) {
         var change = offset["top"] - lastNodeHeight;
@@ -135,16 +136,17 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       // this is to kill the first node which we hacked onto the word container
       nodes[0].style.display = 'none';
-      
 
       //a.style.color = "#FFFF66";
-      if (typeof a != "undefined")
-        a.setAttribute('class', 'karaoke-highlighted');
+      if (a !== undefined) {
+        a.toggleClass("karaoke-word");
+        a.toggleClass("karaoke-highlighted");
+      }
       else
         console.log('yo');
 
       return ret;
-    };
+    }
 
     var intervalMs, _wpm;
     function wpm(wpm){
