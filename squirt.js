@@ -113,6 +113,11 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       if (article_spot > 5 && lastNodeHeight != -1 && offset !== undefined) {
         var change = offset["top"] - lastNodeHeight;
+        if (change > 0) {
+          console.log("lastHeight " + lastNodeHeight);
+          console.log("offset " + offset["top"]);
+          console.log("spot " + article_spot);
+        }
 
         // if there is any scrolling to be done, do it
         if (change > 0) {
@@ -127,6 +132,9 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       if (offset !== undefined) {
         lastNodeHeight = offset["top"];
       }
+
+      nodes[0].style.display = 'none';
+      
 
       //a.style.color = "#FFFF66";
       if (typeof a != "undefined")
@@ -570,7 +578,12 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
             };
 
             // display first word
-          }
+            // TODO: don't be so fucking hacky and do this in nextNode or something better
+            // TODO: basically figure out why what we changed got rid of the first guy when we took out the 3 2 1 or maybe elsewhere?
+            wordContainer.appendChild(nodes[0]);
+            // lastNode = nodes[0];
+
+          };
            on('squirt.play', nodesCOPYhandler);
           //nodesCOPYhandler();
 
