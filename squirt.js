@@ -133,6 +133,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         lastNodeHeight = offset["top"];
       }
 
+      // this is to kill the first node which we hacked onto the word container
       nodes[0].style.display = 'none';
       
 
