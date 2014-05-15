@@ -3,6 +3,7 @@
 <head>
 <title>read.me: A Next-Generation Speed Reader</title>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></script>
 
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -24,6 +25,11 @@
 	a {
 		color: white;
 	}
+
+	input {
+		width: 150px;
+	}
+
 </style>
 
 
@@ -39,9 +45,9 @@
 In order to install read.me, drag and drop the link below to your bookmarks bar. Then, when you want to speed read an article, simply click the bookmark.
 </p>
 <p>
-<td>
-<a class="btn btn-default" href="javascript:(function(){   if(window.sq){      window.sq.closed && window.document.dispatchEvent(new Event('squirt.again'));   } else {     window.sq = {};     window.sq.userId = '--squirtUser--';     s = document.createElement('script');     s.src = 'http://www.princeton.edu/~rsami/squirt.js';     s.s = window.location.search;     s.idx = s.s.indexOf('sq-dev');     if(s.idx != -1){       s.ampIdx = s.s.indexOf('&', s.idx);       s.host = s.s.substring(s.idx + 7, s.ampIdx == -1 ? s.s.length : s.ampIdx);       s.src = 'http://' + (s.host ? s.host : 'localhost') + ':4000/bm/squirt.js';     }     document.body.appendChild(s);   } })();">read.me</a>
-</td>
+
+<input placeholder="Copy and Paste URL Here!" type="text" id="urlInput">
+<input type="submit" value="read.me" class="btn btn-default" style="width:65px" id="urlGo" href="javascript:(function(){   if(window.sq){      window.sq.closed && window.document.dispatchEvent(new Event('squirt.again'));   } else {     window.sq = {};     window.sq.userId = '--squirtUser--';     s = document.createElement('script');     s.src = 'http://www.princeton.edu/~rsami/squirt.js';     s.s = window.location.search;     s.idx = s.s.indexOf('sq-dev');     if(s.idx != -1){       s.ampIdx = s.s.indexOf('&', s.idx);       s.host = s.s.substring(s.idx + 7, s.ampIdx == -1 ? s.s.length : s.ampIdx);       s.src = 'http://' + (s.host ? s.host : 'localhost') + ':4000/bm/squirt.js';     }     document.body.appendChild(s);   } })();">
 </p>
 </body>
 
