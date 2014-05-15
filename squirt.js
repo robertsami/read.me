@@ -106,11 +106,12 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       var a = getKaroakeWordEl(article_spot);
 
       // scroll a little if necessary. arbitrarily check only after fifth word
+      // because sometimes weird change shit happens in the first few words
       // condition >= 1 is necessary because we set height later
       var id = "karaoke_word" + article_spot;
       var offset = $("#"+id).offset();
 
-      if (lastNodeHeight != -1 && offset !== undefined) {
+      if (article_spot > 5 && lastNodeHeight != -1 && offset !== undefined) {
         var change = offset["top"] - lastNodeHeight;
 
         // if there is any scrolling to be done, do it
