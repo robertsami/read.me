@@ -218,6 +218,14 @@
     padding-bottom: 3px;
 
  }
+
+ .sq .karaoke-paragraph {
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+ }
+
  .sq .karaoke-word:active {
     font-size: .8em;
     color: #FF6666;

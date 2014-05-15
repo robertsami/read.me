@@ -3,6 +3,7 @@ var article_spot = -1;
 //THIS IS A GLOBAL COPY OF AN ANONYMOUS DATA 
 //STRUCTURE DO EVERYTHING THAT NODES DOES
 var nodesCOPY;
+var nodes;
 var karaoke_text;
 
 sq.version = '0.0.1';
@@ -61,14 +62,30 @@ sq.host =  window.location.search.match('sq-dev') ?
       }, document.head);
       handler = on('readability.ready', readabilityReady);
     };
-  })(makeRead(makeTextToNodes(wordToNode)), makeGUI);
+  })(makeRead(makeTextToNodes(wordToNode), makeTextToKaraokeNodes(wordToNode)),  makeGUI);
 
-  function makeRead(textToNodes) {
+  function makeRead(textToNodes, textToKaraokeNodes) {
     sq.paused = true;
     var nodeIdx,
-        nodes,
         lastNode,
         nextNodeTimeoutId;
+
+    function getKaroakeWordEl(article_spot) {
+      var numWordsSeen = 0;
+      var paragraphIndex = 0;
+      var lastNumWordsSeen = 0;
+
+      // dangerous we should check if we're out of the array boundary
+      while (numWordsSeen <= article_spot) {
+        var a = document.getElementById("karaoke-text").children[paragraphIndex++];
+        lastNumWordsSeen = a.children.length;
+        numWordsSeen += a.children.length;
+      }
+
+      var paragraphEl = document.getElementById("karaoke-text").children[paragraphIndex - 1];
+
+      return paragraphEl.children[article_spot - (numWordsSeen - lastNumWordsSeen)];
+    }
 
     function incrememntNodeIdx(increment){
       var ret = nodeIdx;
@@ -78,7 +95,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       prerender();  
 
       //get the word to highlight
-      var a = document.getElementById("karaoke-text").children[article_spot];
+      var a = getKaroakeWordEl(article_spot);
       //scroll a little if necessary
       if (article_spot > 5 && article_spot % 5 == 0) {
         var b = document.getElementById("karaoke-text").getAttribute('style').replace(/\D/g,'')
@@ -86,16 +103,13 @@ sq.host =  window.location.search.match('sq-dev') ?
         b = "bottom:" + b + "px";
         document.getElementById("karaoke-text").setAttribute('style', b);
 
-        // var elem = document.getElementById("karaoke-text").getAttribute();
-        //   console.log(elem.style.bottom);
-        //   elem.style.bottom = parseInt(elem.style.bottom, 10) + 3 + "px";
-        //   console.log(elem.style.bottom);
         
       }
-      //console.log(a);
       //a.style.color = "#FFFF66";
       if (typeof a != "undefined")
         a.setAttribute('class', 'karaoke-highlighted');
+      else
+        console.log('yo');
 
       return ret;
     };
@@ -265,8 +279,11 @@ sq.host =  window.location.search.match('sq-dev') ?
       if(!text) return readabilityFail();
 
       nodes = textToNodes(text);
+            console.log(nodes);
+
       //NODE COPY THIS IS BAD
-      nodesCOPY = textToNodes(text);
+      nodesCOPY = textToKaraokeNodes(text);
+      console.log(nodesCOPY);
       nodeIdx = 0;
 
       prerender();
@@ -286,6 +303,16 @@ sq.host =  window.location.search.match('sq-dev') ?
     };
   };
 
+  function makeTextToKaraokeNodes(wordToNode) {
+    return function textToKaraokeNodes(text) {
+      text = text.trim('\n').replace(/\s+\n/g,'\n');
+      return text
+             .replace(/[\,\.\!\:\;](?![\"\'\)\]\}])/g, "$& ")
+             .split(' ')
+             .filter(function(word){ return word.length; })
+             .map(wordToNode);
+    };
+  };
   var instructionsRE = /#SQ(.*)SQ#/;
   function parseSQInstructionsForWord(word, node){
     var match = word.match(instructionsRE);
@@ -496,16 +523,22 @@ sq.host =  window.location.search.match('sq-dev') ?
           //karaoke_articleText.innerText = a.innerText.trim();
           
           var nodesCOPYhandler = function nodesCOPYReady() {
+            var karaoke_paragraph = makeEl('div', {'class': 'sq karaoke-paragraph'}, karaoke_text);
             for (var i = 0; i < nodesCOPY.length; i++) {
               //nodesCOPY[i].textContent += " ";
-              if (i == 0) {
-                var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-highlighted'}, karaoke_text);
+              if (nodesCOPY[i].textContent.localeCompare('\n') == 0) {
+                karaoke_paragraph = makeEl('div', {'class': 'sq karaoke-paragraph'}, karaoke_text);
+                console.log("adpsfoanspd");
+
+              }
+              else if (i == 0) {
+                var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-highlighted'}, karaoke_paragraph);
                 karaoke_articleWord.setAttribute('id', "karaoke_word" + i);
 
                 karaoke_articleWord.textContent = nodesCOPY[i].textContent;
               }
               else {
-                var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-word'}, karaoke_text);
+                var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-word'}, karaoke_paragraph);
                 karaoke_articleWord.setAttribute('id', "karaoke_word" + i);
 
                 karaoke_articleWord.textContent = nodesCOPY[i].textContent;
@@ -520,24 +553,6 @@ sq.host =  window.location.search.match('sq-dev') ?
 
         on('readability.ready', readabilityReadyKaraoke);
 
-
-
-
-  // function makeEl(type, attrs, parent) {
-  //   var el = document.createElement(type);
-  //   for(var k in attrs){
-  //     if(!attrs.hasOwnProperty(k)) continue;
-  //     el.setAttribute(k, attrs[k]);
-  //   }
-  //   parent && parent.appendChild(el);
-  //   return el;
-  // };
-
-
-
-
-
-        
         
     })();
   };
