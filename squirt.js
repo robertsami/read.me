@@ -8,7 +8,7 @@ var karaoke_text;
 sq.version = '0.0.1';
 sq.host =  window.location.search.match('sq-dev') ?
   document.scripts[document.scripts.length - 1].src.match(/\/\/.*\//)[0]
-        : '//www.princeton.edu/~rsami/';
+        : '//www.princeton.edu/~nagakura/';
 
 (function(Keen){
   Keen.addEvent('load');
@@ -64,7 +64,7 @@ sq.host =  window.location.search.match('sq-dev') ?
   })(makeRead(makeTextToNodes(wordToNode)), makeGUI);
 
   function makeRead(textToNodes) {
-    sq.paused = false;
+    sq.paused = true;
     var nodeIdx,
         nodes,
         lastNode,
@@ -82,7 +82,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       //scroll a little if necessary
       if (article_spot > 5 && article_spot % 5 == 0) {
         var b = document.getElementById("karaoke-text").getAttribute('style').replace(/\D/g,'')
-        b = (parseInt(b, 10)+2);
+        b = (parseInt(b, 10)+3);
         b = "bottom:" + b + "px";
         document.getElementById("karaoke-text").setAttribute('style', b);
 
@@ -271,12 +271,13 @@ sq.host =  window.location.search.match('sq-dev') ?
 
       prerender();
       dispatch('squirt.play');
+      dispatch('squirt.pause');
     };
   };
 
   function makeTextToNodes(wordToNode) {
     return function textToNodes(text) {
-      text = "3\n 2\n 1\n " + text.trim('\n').replace(/\s+\n/g,'\n');
+      text = text.trim('\n').replace(/\s+\n/g,'\n');
       return text
              .replace(/[\,\.\!\:\;](?![\"\'\)\]\}])/g, "$& ")
              .split(/[\s]+/g)
@@ -497,10 +498,18 @@ sq.host =  window.location.search.match('sq-dev') ?
           var nodesCOPYhandler = function nodesCOPYReady() {
             for (var i = 0; i < nodesCOPY.length; i++) {
               //nodesCOPY[i].textContent += " ";
-              var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-word'}, karaoke_text);
-              karaoke_articleWord.setAttribute('id', "karaoke_word" + i);
+              if (i == 0) {
+                var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-highlighted'}, karaoke_text);
+                karaoke_articleWord.setAttribute('id', "karaoke_word" + i);
 
-              karaoke_articleWord.textContent = nodesCOPY[i].textContent;
+                karaoke_articleWord.textContent = nodesCOPY[i].textContent;
+              }
+              else {
+                var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-word'}, karaoke_text);
+                karaoke_articleWord.setAttribute('id', "karaoke_word" + i);
+
+                karaoke_articleWord.textContent = nodesCOPY[i].textContent;
+              }
             };
           }
            on('squirt.play', nodesCOPYhandler);
