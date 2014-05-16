@@ -4,6 +4,7 @@ var article_spot = -1;
 //STRUCTURE DO EVERYTHING THAT NODES DOES
 var nodesCOPY;
 var nodes;
+var nodeIdx;
 var karaoke_text;
 
 sq.version = '0.0.1';
@@ -16,6 +17,10 @@ var jQuery = document.createElement('script');
 jQuery.src = '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js';
 jQuery.type = 'text/javascript';
 document.getElementsByTagName('head')[0].appendChild(jQuery);
+
+
+
+
 
 (function(Keen){
   Keen.addEvent('load');
@@ -72,7 +77,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
   function makeRead(textToNodes, textToKaraokeNodes) {
     sq.paused = true;
-    var nodeIdx,
+    var 
         lastNode,
         nextNodeTimeoutId;
     var lastNodeHeight = -1;
@@ -100,6 +105,8 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       nodeIdx += increment || 1;
 
       nodeIdx = Math.max(0, nodeIdx);
+            console.log(nodeIdx);
+
       prerender();
 
       //get the word to highlight
@@ -123,7 +130,8 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         // if there is any scrolling to be done, do it
         if (change > 0) {
           var b = document.getElementById("karaoke-text").getAttribute('style').replace(/\D/g,'');
-          b = (parseInt(b, 10)+change);
+          b = (parseInt(b, 10)+parseInt(change, 10));
+          console.log(b);
           b = "bottom:" + b + "px";
           document.getElementById("karaoke-text").setAttribute('style', b);
         }
@@ -147,6 +155,61 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       return ret;
     }
+
+    // function makeClick(){
+    //    //add on-click bindings
+    //         $('.karaoke-word').on('click', function() {
+    //           console.log("yooooo");
+    //           dispatch('squirt.pause');
+    //           var newSpot = $(this).attr('id').replace(/\D/g,'');
+    //           newSpot= Math.max(0, parseInt(newSpot, 10));
+    //           !sq.paused && clearTimeout(nextNodeTimeoutId);
+    //           var temp = nodeIdx
+
+    //           if (nodeIdx > newSpot) {
+    //             while (temp > newSpot) {
+    //               incrememntNodeIdx(-1);
+    //               console.log(temp);
+    //               temp--;
+    //             }
+    //             nextNode(true);
+    //           }
+    //           else if (nodeIdx < newSpot) {
+    //             while (temp < newSpot) {
+    //               incrememntNodeIdx(1);
+    //               console.log(temp);
+    //               temp++;
+    //             }
+    //             nextNode(true);
+    //           }
+
+    //         });
+    //         $('.karaoke-highlighted').on('click', function() {
+    //                         console.log("yooooo");
+    //           dispatch('squirt.pause');
+    //           var newSpot = $(this).attr('id').replace(/\D/g,'');
+    //           newSpot = Math.max(0, parseInt(newSpot, 10));
+    //           !sq.paused && clearTimeout(nextNodeTimeoutId);
+    //           var temp = nodeIdx
+
+    //           if (nodeIdx > newSpot) {
+    //             while (temp > newSpot) {
+    //               incrememntNodeIdx(-1);
+    //               console.log(temp);
+    //               temp--;
+    //             }
+    //             nextNode(true);
+    //           }
+    //           else if (nodeIdx < newSpot) {
+    //             while (temp < newSpot) {
+    //               incrememntNodeIdx();
+    //               console.log(temp);
+    //               temp++;
+    //             }
+    //             nextNode(true);
+    //           }
+    //         });
+    // };
 
     var intervalMs, _wpm;
     function wpm(wpm){
@@ -313,11 +376,9 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       if(!text) return readabilityFail();
 
       nodes = textToNodes(text);
-            console.log(nodes);
 
       //NODE COPY THIS IS BAD
       nodesCOPY = textToKaraokeNodes(text);
-      console.log(nodesCOPY);
       nodeIdx = 0;
 
       prerender();
@@ -564,7 +625,6 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
               //nodesCOPY[i].textContent += " ";
               if (nodesCOPY[i].textContent.localeCompare('\n') == 0) {
                 karaoke_paragraph = makeEl('div', {'class': 'sq karaoke-paragraph'}, karaoke_text);
-                console.log("adpsfoanspd");
                 skippedIds += 1;
               }
               else if (i == 0) {
@@ -580,6 +640,9 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
                 karaoke_articleWord.textContent = nodesCOPY[i].textContent;
               }
             };
+
+           
+
 
             // display first word
             // TODO: don't be so fucking hacky and do this in nextNode or something better
@@ -747,3 +810,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
   return Keen;
 })());
+
+
+
+
