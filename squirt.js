@@ -21,7 +21,6 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
 
 
-
 (function(Keen){
   Keen.addEvent('load');
 
@@ -146,14 +145,14 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       if (article_spot > 5 && lastNodeHeight != -1 && offset !== undefined) {
         var change = offset["top"] - lastNodeHeight;
-        if (change > 0) {
+        if (change !== 0) {
           console.log("lastHeight " + lastNodeHeight);
           console.log("offset " + offset["top"]);
           console.log("spot " + article_spot);
         }
 
         // if there is any scrolling to be done, do it
-        if (change > 0) {
+        if (change !== 0) {
           var b = document.getElementById("karaoke-text").getAttribute('style').replace(/\D/g,'');
           b = (parseInt(b, 10)+parseInt(change, 10));
           b = "bottom:" + b + "px";
@@ -162,7 +161,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       }
       // set the lastNodeHeight if there is an offset defined ie we aren't in a new paragraph
       // long term we should fix the sequence numbers of id's so that this doesn't happen
-      if (offset !== undefined) {
+      if (offset !== undefined && lastNodeHeight == -1) {
         lastNodeHeight = offset["top"];
       }
 
