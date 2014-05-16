@@ -222,7 +222,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         var temp = parseInt(start, 10);
         !sq.paused && clearTimeout(nextNodeTimeoutId);
         incrememntNodeIdx(-Math.floor(e.seconds * 1000 / intervalMs));
-        while(!nodes[nodeIdx].word.match(/\./) && nodeIdx < 0){
+        while(!nodes[nodeIdx].word.match(/\./) && nodeIdx > 0){
           incrememntNodeIdx(-1);
           temp--;
         }
