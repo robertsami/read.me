@@ -79,7 +79,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
     var 
         lastNode,
         nextNodeTimeoutId;
-    var lastNodeHeight = -1;
+    var firstNodeHeight = -1;
 
     function getKaroakeWordIndex(article_spot) {
       var numWordsSeen = 0;
@@ -143,10 +143,10 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       // condition >= 1 is necessary because we set height later
       var offset = a.offset();
 
-      if (article_spot > 5 && lastNodeHeight != -1 && offset !== undefined) {
-        var change = offset["top"] - lastNodeHeight;
+      if (article_spot > 5 && firstNodeHeight != -1 && offset !== undefined) {
+        var change = offset["top"] - firstNodeHeight;
         if (change !== 0) {
-          console.log("lastHeight " + lastNodeHeight);
+          console.log("lastHeight " + firstNodeHeight);
           console.log("offset " + offset["top"]);
           console.log("spot " + article_spot);
         }
@@ -159,10 +159,9 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
           document.getElementById("karaoke-text").setAttribute('style', b);
         }
       }
-      // set the lastNodeHeight if there is an offset defined ie we aren't in a new paragraph
-      // long term we should fix the sequence numbers of id's so that this doesn't happen
-      if (offset !== undefined && lastNodeHeight == -1) {
-        lastNodeHeight = offset["top"];
+      // grab the first node height, i.e. if its -1 and we actually have a height to get
+      if (offset !== undefined && firstNodeHeight == -1) {
+        firstNodeHeight = offset["top"];
       }
 
       // this is to kill the first node which we hacked onto the word container
