@@ -4,6 +4,7 @@ var article_spot = -1;
 //STRUCTURE DO EVERYTHING THAT NODES DOES
 var nodesCOPY;
 var nodes;
+var nodeIdx;
 var karaoke_text;
 
 sq.version = '0.0.1';
@@ -16,6 +17,10 @@ var jQuery = document.createElement('script');
 jQuery.src = '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js';
 jQuery.type = 'text/javascript';
 document.getElementsByTagName('head')[0].appendChild(jQuery);
+
+
+
+
 
 (function(Keen){
   Keen.addEvent('load');
@@ -72,7 +77,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
   function makeRead(textToNodes, textToKaraokeNodes) {
     sq.paused = true;
-    var nodeIdx,
+    var 
         lastNode,
         nextNodeTimeoutId;
     var lastNodeHeight = -1;
@@ -94,14 +99,41 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       return article_spot - (numWordsSeen - lastNumWordsSeen);
     }
 
+    function toggleWords(finish, start) {
+      console.log(finish);
+      console.log(start);
+      var id = "karaoke_word" + start;
+      var a = $("#"+id);
 
+      if (a !== undefined) {
+        a.toggleClass("karaoke-word");
+        a.toggleClass("karaoke-highlighted");
+      }
+
+
+      start--;
+      start--;
+      console.log(start);
+      while (finish <= start){
+        var id = "karaoke_word" + finish;
+        var a = $("#"+id);
+
+        if (a !== undefined) {
+          a.toggleClass("karaoke-word");
+          a.toggleClass("karaoke-highlighted");
+        }
+        finish++;   
+
+      }
+      article_spot--;
+    }
     function incrememntNodeIdx(increment){
       var ret = nodeIdx;
       nodeIdx += increment || 1;
 
       nodeIdx = Math.max(0, nodeIdx);
-      prerender();
 
+      prerender();
       //get the word to highlight
       var aIndex = getKaroakeWordIndex(article_spot);
       var id = "karaoke_word" + article_spot;
@@ -123,7 +155,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         // if there is any scrolling to be done, do it
         if (change > 0) {
           var b = document.getElementById("karaoke-text").getAttribute('style').replace(/\D/g,'');
-          b = (parseInt(b, 10)+change);
+          b = (parseInt(b, 10)+parseInt(change, 10));
           b = "bottom:" + b + "px";
           document.getElementById("karaoke-text").setAttribute('style', b);
         }
@@ -139,6 +171,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       //a.style.color = "#FFFF66";
       if (a !== undefined) {
+        console.log("yo");
         a.toggleClass("karaoke-word");
         a.toggleClass("karaoke-highlighted");
       }
@@ -147,6 +180,10 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       return ret;
     }
+
+    function makeClick(){
+       
+    };
 
     var intervalMs, _wpm;
     function wpm(wpmInput){
@@ -182,12 +219,19 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       on('squirt.rewind', function(e){
         // Rewind by `e.value` seconds. Then walk back to the
         // beginning of the sentence.
+        var start = nodeIdx;
+        var temp = parseInt(start, 10);
         !sq.paused && clearTimeout(nextNodeTimeoutId);
         incrememntNodeIdx(-Math.floor(e.seconds * 1000 / intervalMs));
         while(!nodes[nodeIdx].word.match(/\./) && nodeIdx < 0){
           incrememntNodeIdx(-1);
+          temp--;
         }
         nextNode(true);
+        article_spot = nodeIdx;
+
+        toggleWords(nodeIdx, start);
+
         Keen.addEvent('rewind');
       });
     })();
@@ -311,11 +355,9 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       if(!text) return readabilityFail();
 
       nodes = textToNodes(text);
-            console.log(nodes);
 
       //NODE COPY THIS IS BAD
       nodesCOPY = textToKaraokeNodes(text);
-      console.log(nodesCOPY);
       nodeIdx = 0;
 
       prerender();
@@ -564,7 +606,6 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
               //nodesCOPY[i].textContent += " ";
               if (nodesCOPY[i].textContent.localeCompare('\n') == 0) {
                 karaoke_paragraph = makeEl('div', {'class': 'sq karaoke-paragraph'}, karaoke_text);
-                console.log("adpsfoanspd");
                 skippedIds += 1;
               }
               else if (i == 0) {
@@ -580,6 +621,9 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
                 karaoke_articleWord.textContent = nodesCOPY[i].textContent;
               }
             }
+
+           
+
 
             // display first word
             // TODO: don't be so fucking hacky and do this in nextNode or something better
@@ -747,3 +791,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
   return Keen;
 })());
+
+
+
+
