@@ -33,11 +33,11 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       startSquirt();
     });
 
-    function startSquirt(){
+    function startSquirt() {
       Keen.addEvent('start');
       showGUI();
       getText(read);
-    };
+    }
 
     //GRABS THE TEXT
     function getText(read){
@@ -59,7 +59,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       function readabilityReady(){
         handler && document.removeEventListener('readility.ready', handler);
         read(readability.grabArticleText());
-      };
+      }
 
       if(window.readability) return readabilityReady();
 
@@ -67,7 +67,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         src: sq.host + 'readability.js'
       }, document.head);
       handler = on('readability.ready', readabilityReady);
-    };
+    }
   })(makeRead(makeTextToNodes(wordToNode), makeTextToKaraokeNodes(wordToNode)),  makeGUI);
 
   function makeRead(textToNodes, textToKaraokeNodes) {
@@ -149,10 +149,10 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
     }
 
     var intervalMs, _wpm;
-    function wpm(wpm){
-      _wpm = wpm;
-      intervalMs = 60 * 1000 / wpm ;
-    };
+    function wpm(wpmInput){
+      _wpm = wpmInput;
+      intervalMs = 60 * 1000 / wpmInput ;
+    }
 
     (function readerEventHandlers(){
       on('squirt.close', function(){
@@ -169,7 +169,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         sq.wpm = Number(e.value);
         wpm(e.value);
         dispatch('squirt.wpm.after');
-        e.notForKeen == undefined && Keen.addEvent('wpm', {'wpm': sq.wpm});
+        e.notForKeen === undefined && Keen.addEvent('wpm', {'wpm': sq.wpm});
       });
 
       on('squirt.pause', pause);
@@ -197,23 +197,21 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       dispatch('squirt.pause.after');
       clearTimeout(nextNodeTimeoutId);
       Keen.addEvent('pause');
-    };
-
-
+    }
 
     function play(e){
       sq.paused = false;
       dispatch('squirt.pause.after');
-      document.querySelector('.sq .wpm-selector').style.display = 'none'
+      document.querySelector('.sq .wpm-selector').style.display = 'none';
       nextNode(e.jumped);
 
       e.notForKeen === undefined && Keen.addEvent('play');
-    };
+    }
 
     var toRender;
     function prerender(){
       toRender = nodes[nodeIdx];
-      if(toRender == null) return;
+      if(toRender === null) return;
       prerenderer.appendChild(toRender);
       nodes[nodeIdx].center();
 
@@ -230,7 +228,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       }
       toggle(finalWordContainer);
       return;
-    };
+    }
 
     var delay, jumped, nextIdx;
     function nextNode(jumped) {
@@ -247,7 +245,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       lastNode.instructions && invoke(lastNode.instructions);
       if(sq.paused) return;
       nextNodeTimeoutId = setTimeout(nextNode, intervalMs * getDelay(lastNode, jumped));
-    };
+    }
 
     var waitAfterShortWord = 1.2;
     var waitAfterComma = 2;
@@ -268,7 +266,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       if(word.length < 4) return waitAfterShortWord;
       if(word.length > 11) return waitAfterLongWord;
       return 1;
-    };
+    }
 
     function showTweetButton(words, minutes){
       var html = "<div>You just read " + words + " words in " + minutes + " minutes!</div>";
@@ -282,17 +280,17 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
                + paramStr + '\"'
                + ' style=\"width:120px; height:20px;\"></iframe>';
       finalWordContainer.innerHTML = html;
-    };
+    }
 
     function showInstallLink(){
       finalWordContainer.innerHTML = "<a class='install' href='/install.html'>Install Squirt</a>";
-    };
+    }
 
     function readabilityFail(){
         Keen.addEvent('readability-fail');
         var modal = document.querySelector('.sq .modal');
         modal.innerHTML = '<div class="error">Oops! This page is too hard for Squirt to read. We\'ve been notified, and will do our best to resolve the issue shortly.</div>';
-    };
+    }
 
     dispatch('squirt.wpm', {value: 400, notForKeen: true});
 
@@ -306,7 +304,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       finalWordContainer = document.querySelector('.sq .final-word');
       document.querySelector('.sq .reader').style.display = 'block';
       document.querySelector('.sq .final-word').style.display = 'none';
-    };
+    }
 
     return function read(text) {
       initDomRefs();
@@ -324,7 +322,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       dispatch('squirt.play');
       dispatch('squirt.pause');
     };
-  };
+  }
 
   function makeTextToNodes(wordToNode) {
     return function textToNodes(text) {
@@ -335,7 +333,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
              .filter(function(word){ return word.length; })
              .map(wordToNode);
     };
-  };
+  }
 
   function makeTextToKaraokeNodes(wordToNode) {
     return function textToKaraokeNodes(text) {
@@ -346,7 +344,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
              .filter(function(word){ return word.length; })
              .map(wordToNode);
     };
-  };
+  }
   var instructionsRE = /#SQ(.*)SQ#/;
   function parseSQInstructionsForWord(word, node){
     var match = word.match(instructionsRE);
@@ -357,13 +355,13 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       .map(function(instruction){
         var val = Number(instruction.split('=')[1]);
         node.instructions.push(function(){
-          dispatch('squirt.wpm', {value: val, notForKeen: true})
+          dispatch('squirt.wpm', {value: val, notForKeen: true});
         });
       });
       return word.replace(instructionsRE, '');
-    };
+    }
     return word;
-  };
+  }
 
   // ORP: Optimal Recgonition Point
   function getORPIndex(word){
@@ -378,7 +376,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       (length == 2 ? 1 :
           (length == 3 ? 1 :
               Math.floor(length / 2) - 1));
-  };
+  }
 
   function wordToNode(word) {
     var node = makeDiv({'class': 'word'});
@@ -398,20 +396,20 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
     }).bind(null, node.children[orpIdx]);
 
     return node;
-  };
+  }
 
   var disableKeyboardShortcuts;
   function showGUI(){
     blur();
     document.querySelector('.sq').style.display = 'block';
     disableKeyboardShortcuts = on('keydown', handleKeypress);
-  };
+  }
 
   function hideGUI(){
     unblur();
     document.querySelector('.sq').style.display = 'none';
     disableKeyboardShortcuts && disableKeyboardShortcuts();
-  };
+  }
 
   var keyHandlers = {
       32: dispatch.bind(null, 'squirt.play.toggle'),
@@ -423,16 +421,16 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
   function handleKeypress(e){
     var handler = keyHandlers[e.keyCode];
-    handler && (handler(), e.preventDefault())
+    handler && (handler(), e.preventDefault());
     return false;
-  };
+  }
 
   function blur(){
     map(document.body.children, function(node){
       if(!node.classList.contains('sq'))
         node.classList.add('sq-blur');
     });
-  };
+  }
 
   function unblur(){
     map(document.body.children, function(node){
@@ -475,9 +473,11 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         bind("{{wpm}} WPM", sq, wpmLink);
         on('squirt.wpm.after', wpmLink.render);
         on(control, 'click', function(){
-          toggle(wpmSelector) ?
-            dispatch('squirt.pause') :
+          if(toggle(wpmSelector)) {
+            dispatch('squirt.pause');
+          } else {
             dispatch('squirt.play');
+          }
         });
 
         // create the custom selector
@@ -497,7 +497,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
             dispatch('squirt.play');
             wpmSelector.style.display = 'none';
           });
-        };
+        }
 
         // create the last option for the custom selector
         var plus50Opt = makeDiv({'class': 'sq wpm-option sq wpm-plus-50'}, wpmSelector);
@@ -547,7 +547,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         var karaoke = makeEl('div', {'class': 'sq karaoke'}, squirt);
         // var karaoke_title = makeDiv({'class': 'karaoke-title'}, karaoke);
         //   karaoke_title.innerText = "Full Text!!!!!!!!!!";
-        karaoke_text = makeDiv({'class': 'karaoke-textbox', 'id': 'karaoke-text', 'style': 'bottom:0px'}, karaoke);        
+        karaoke_text = makeDiv({'class': 'karaoke-textbox', 'id': 'karaoke-text', 'style': 'bottom:0px'}, karaoke);
 
 
         // var handler;
@@ -579,7 +579,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
                 karaoke_articleWord.textContent = nodesCOPY[i].textContent;
               }
-            };
+            }
 
             // display first word
             // TODO: don't be so fucking hacky and do this in nextNode or something better
@@ -592,13 +592,13 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
           //nodesCOPYhandler();
 
           //GO THROUGH NODE COPY LIST AND GET THE COMPLETE TEXT
-        };
+        }
 
         on('readability.ready', readabilityReadyKaraoke);
 
         
     })();
-  };
+  }
 
   // utilites
 
@@ -619,7 +619,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       break;
       case "undefined":
       objsAreFuncs = true;
-    };
+    }
     return map(objs, function(o){
       return objsAreFuncs ? o.apply(null, args) : o[funcName].apply(o, args);
     });
@@ -633,7 +633,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
     }
     parent && parent.appendChild(el);
     return el;
-  };
+  }
 
   // data binding... *cough*
   function bind(expr, data, el){
@@ -641,7 +641,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
     return on('squirt.els.render', function(){
       el.render();
     });
-  };
+  }
 
   function render(expr, data, el){
     var match, rendered = expr;
@@ -650,11 +650,11 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       rendered = rendered.replace(match, val == undefined ? '' : val);
     });
     el.textContent = rendered;
-  };
+  }
 
   function makeDiv(attrs, parent){
     return makeEl('div', attrs, parent);
-  };
+  }
 
   function injectStylesheet(url, onLoad){
     var el = makeEl('link', {
@@ -664,10 +664,10 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
     }, document.head);
     function loadHandler(){
       onLoad();
-      el.removeEventListener('load', loadHandler)
-    };
+      el.removeEventListener('load', loadHandler);
+    }
     onLoad && on(el, 'load', loadHandler);
-  };
+  }
 
 
   function on(bus, evts, cb){
@@ -685,24 +685,24 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
     });
     if(removers.length == 1) return removers[0];
     return removers;
-  };
+  }
 
   function dispatch(evt, attrs, dispatcher){
     var evt = new Event(evt);
     for(var k in attrs){
-      if(!attrs.hasOwnProperty(k)) continue
+      if(!attrs.hasOwnProperty(k)) continue;
       evt[k] = attrs[k];
     }
     (dispatcher || document).dispatchEvent(evt);
-  };
+  }
 
   function toggle(el){
     var s = window.getComputedStyle(el);
     return (el.style.display = s.display == 'none' ? 'block' : 'none') == 'block';
-  };
+  }
 
 })((function injectKeen(){
-  window.Keen=window.Keen||{configure:function(e){this._cf=e},addEvent:function(e,t,n,i){this._eq=this._eq||[],this._eq.push([e,t,n,i])},setGlobalProperties:function(e){this._gp=e},onChartsReady:function(e){this._ocrq=this._ocrq||[],this._ocrq.push(e)}};(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src=("https:"==document.location.protocol?"https://":"http://")+"dc8na2hxrj29i.cloudfront.net/code/keen-2.1.0-min.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
+  window.Keen=window.Keen||{configure:function(e){this._cf=e;},addEvent:function(e,t,n,i){this._eq=this._eq||[],this._eq.push([e,t,n,i])},setGlobalProperties:function(e){this._gp=e},onChartsReady:function(e){this._ocrq=this._ocrq||[],this._ocrq.push(e)}};(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src=("https:"==document.location.protocol?"https://":"http://")+"dc8na2hxrj29i.cloudfront.net/code/keen-2.1.0-min.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
 
   var Keen = window.Keen;
   var prod = {
@@ -725,7 +725,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
       return v.toString(16);
     });
-  };
+  }
 
   Keen.setGlobalProperties(function(){
     var props = {
