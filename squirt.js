@@ -99,16 +99,41 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       return article_spot - (numWordsSeen - lastNumWordsSeen);
     }
 
+    function toggleWords(finish, start) {
+      console.log(finish);
+      console.log(start);
+      var id = "karaoke_word" + start;
+      var a = $("#"+id);
 
+      if (a !== undefined) {
+        a.toggleClass("karaoke-word");
+        a.toggleClass("karaoke-highlighted");
+      }
+
+
+      start--;
+      start--;
+      console.log(start);
+      while (finish <= start){
+        var id = "karaoke_word" + finish;
+        var a = $("#"+id);
+
+        if (a !== undefined) {
+          a.toggleClass("karaoke-word");
+          a.toggleClass("karaoke-highlighted");
+        }
+        finish++;   
+
+      }
+      article_spot--;
+    }
     function incrememntNodeIdx(increment){
       var ret = nodeIdx;
       nodeIdx += increment || 1;
 
       nodeIdx = Math.max(0, nodeIdx);
-            console.log(nodeIdx);
 
       prerender();
-
       //get the word to highlight
       var aIndex = getKaroakeWordIndex(article_spot);
       var id = "karaoke_word" + article_spot;
@@ -131,7 +156,6 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         if (change > 0) {
           var b = document.getElementById("karaoke-text").getAttribute('style').replace(/\D/g,'');
           b = (parseInt(b, 10)+parseInt(change, 10));
-          console.log(b);
           b = "bottom:" + b + "px";
           document.getElementById("karaoke-text").setAttribute('style', b);
         }
@@ -147,6 +171,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       //a.style.color = "#FFFF66";
       if (a !== undefined) {
+        console.log("yo");
         a.toggleClass("karaoke-word");
         a.toggleClass("karaoke-highlighted");
       }
@@ -156,60 +181,9 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       return ret;
     }
 
-    // function makeClick(){
-    //    //add on-click bindings
-    //         $('.karaoke-word').on('click', function() {
-    //           console.log("yooooo");
-    //           dispatch('squirt.pause');
-    //           var newSpot = $(this).attr('id').replace(/\D/g,'');
-    //           newSpot= Math.max(0, parseInt(newSpot, 10));
-    //           !sq.paused && clearTimeout(nextNodeTimeoutId);
-    //           var temp = nodeIdx
-
-    //           if (nodeIdx > newSpot) {
-    //             while (temp > newSpot) {
-    //               incrememntNodeIdx(-1);
-    //               console.log(temp);
-    //               temp--;
-    //             }
-    //             nextNode(true);
-    //           }
-    //           else if (nodeIdx < newSpot) {
-    //             while (temp < newSpot) {
-    //               incrememntNodeIdx(1);
-    //               console.log(temp);
-    //               temp++;
-    //             }
-    //             nextNode(true);
-    //           }
-
-    //         });
-    //         $('.karaoke-highlighted').on('click', function() {
-    //                         console.log("yooooo");
-    //           dispatch('squirt.pause');
-    //           var newSpot = $(this).attr('id').replace(/\D/g,'');
-    //           newSpot = Math.max(0, parseInt(newSpot, 10));
-    //           !sq.paused && clearTimeout(nextNodeTimeoutId);
-    //           var temp = nodeIdx
-
-    //           if (nodeIdx > newSpot) {
-    //             while (temp > newSpot) {
-    //               incrememntNodeIdx(-1);
-    //               console.log(temp);
-    //               temp--;
-    //             }
-    //             nextNode(true);
-    //           }
-    //           else if (nodeIdx < newSpot) {
-    //             while (temp < newSpot) {
-    //               incrememntNodeIdx();
-    //               console.log(temp);
-    //               temp++;
-    //             }
-    //             nextNode(true);
-    //           }
-    //         });
-    // };
+    function makeClick(){
+       
+    };
 
     var intervalMs, _wpm;
     function wpm(wpm){
@@ -245,12 +219,19 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       on('squirt.rewind', function(e){
         // Rewind by `e.value` seconds. Then walk back to the
         // beginning of the sentence.
+        var start = nodeIdx;
+        var temp = parseInt(start, 10);
         !sq.paused && clearTimeout(nextNodeTimeoutId);
         incrememntNodeIdx(-Math.floor(e.seconds * 1000 / intervalMs));
         while(!nodes[nodeIdx].word.match(/\./) && nodeIdx < 0){
           incrememntNodeIdx(-1);
+          temp--;
         }
         nextNode(true);
+        article_spot = nodeIdx;
+
+        toggleWords(nodeIdx, start);
+
         Keen.addEvent('rewind');
       });
     })();
