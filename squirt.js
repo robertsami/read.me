@@ -626,8 +626,6 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
           //GO THROUGH NODE COPY LIST AND GET THE COMPLETE TEXT
         }
 
-        $("#karaoke-text").addClass("noscroll");
-
         on('readability.ready', readabilityReadyKaraoke);
 
         

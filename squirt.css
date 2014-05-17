@@ -212,10 +212,7 @@
   position: relative;
   margin: 60px;
   top: 10px;
-  overflow-y: scroll;
 }
-
-.noscroll { overflow: hidden; }
 
 .sq .karaoke-word {
   font-size: .8em;
@@ -224,13 +221,6 @@
   float: left;
   padding-right: 4px;
   padding-bottom: 3px;
- }
-
- .sq .karaoke-align {
-  visibility:hidden;
-  position: absolute;
-  margin: 60px;
-  top: 20px;
  }
 
  .sq .karaoke-paragraph {
