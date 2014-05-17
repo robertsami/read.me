@@ -576,9 +576,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         // var karaoke_title = makeDiv({'class': 'karaoke-title'}, karaoke);
         //   karaoke_title.innerText = "Full Text!!!!!!!!!!";
         karaoke_text = makeDiv({'class': 'karaoke-textbox', 'id': 'karaoke-text', 'style':'top:10px'}, karaoke);
-        var karaoke_align = makeDiv({'class': 'karaoke-align', 'id': 'karaoke-align'}, karaoke);
-        var karaoke_align1 = makeDiv({'class': 'karaoke-align', 'id': 'karaoke-align', 'style':'top:20px'}, karaoke);
-
+        
         // var handler;
         function readabilityReadyKaraoke(){
           readability.hello();
