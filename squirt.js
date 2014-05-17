@@ -7,18 +7,17 @@ var nodes;
 var nodeIdx;
 var karaoke_text;
 
+
 sq.version = '0.0.1';
 sq.host =  window.location.search.match('sq-dev') ?
   document.scripts[document.scripts.length - 1].src.match(/\/\/.*\//)[0]
-        : '//www.princeton.edu/~nagakura/';
+        : '//www.princeton.edu/~rsami/';
 
 // include jQuery
 var jQuery = document.createElement('script');
 jQuery.src = '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js';
 jQuery.type = 'text/javascript';
 document.getElementsByTagName('head')[0].appendChild(jQuery);
-
-
 
 
 (function(Keen){
@@ -76,10 +75,9 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
   function makeRead(textToNodes, textToKaraokeNodes) {
     sq.paused = true;
-    var 
-        lastNode,
+    var lastNode,
         nextNodeTimeoutId;
-    var firstNodeHeight = -1;
+
 
     function getKaroakeWordIndex(article_spot) {
       var numWordsSeen = 0;
@@ -134,35 +132,41 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       prerender();
       //get the word to highlight
-      var aIndex = getKaroakeWordIndex(article_spot);
-      var id = "karaoke_word" + article_spot;
-      var a = $("#"+id);
+      var a = $("#karaoke_word"+article_spot);
+
+      var karaoke_text_box = $("#karaoke-text");
 
       // scroll a little if necessary. arbitrarily check only after fifth word
       // because sometimes weird change shit happens in the first few words
       // condition >= 1 is necessary because we set height later
       var offset = a.offset();
 
-      if (article_spot > 5 && firstNodeHeight != -1 && offset !== undefined) {
-        var change = offset["top"] - firstNodeHeight;
-        if (change !== 0) {
-          console.log("lastHeight " + firstNodeHeight);
+      if (article_spot > 5 && offset !== undefined) {
+        var lastDiv = $("#karaoke_word"+(article_spot - 1));
+
+        var change = offset["top"] - lastDiv.offset()["top"];
+        // if (change !== 0) {
+          console.log("lastHeight " + lastDiv.offset()["top"]);
           console.log("offset " + offset["top"]);
           console.log("spot " + article_spot);
-        }
+          console.log("change " + change);
+          console.log("textbox top " + $(".karaoke-textbox").offset()["top"]);
+        // }
 
         // if there is any scrolling to be done, do it
-        if (change !== 0) {
-          var b = document.getElementById("karaoke-text").getAttribute('style').replace(/\D/g,'');
-          b = (parseInt(b, 10)+parseInt(change, 10));
-          b = "bottom:" + b + "px";
-          document.getElementById("karaoke-text").setAttribute('style', b);
-        }
+        
+        $("#karaoke-text").animate({
+          top: "-=" + change
+        }, 10, function() {
+          console.log("hey");
+        });
       }
-      // grab the first node height, i.e. if its -1 and we actually have a height to get
-      if (offset !== undefined && firstNodeHeight == -1) {
-        firstNodeHeight = offset["top"];
-      }
+
+      // a.parent().position({
+      //   my: 'top',
+      //   at: 'center',
+      //   of: '#karaoke-align'
+      // });
 
       // this is to kill the first node which we hacked onto the word container
       nodes[0].style.display = 'none';
@@ -587,8 +591,9 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         var karaoke = makeEl('div', {'class': 'sq karaoke'}, squirt);
         // var karaoke_title = makeDiv({'class': 'karaoke-title'}, karaoke);
         //   karaoke_title.innerText = "Full Text!!!!!!!!!!";
-        karaoke_text = makeDiv({'class': 'karaoke-textbox', 'id': 'karaoke-text', 'style': 'bottom:0px'}, karaoke);
-
+        karaoke_text = makeDiv({'class': 'karaoke-textbox', 'id': 'karaoke-text', 'style':'top:10px'}, karaoke);
+        var karaoke_align = makeDiv({'class': 'karaoke-align', 'id': 'karaoke-align'}, karaoke);
+        var karaoke_align1 = makeDiv({'class': 'karaoke-align', 'id': 'karaoke-align', 'style':'top:20px'}, karaoke);
 
         // var handler;
         function readabilityReadyKaraoke(){
@@ -605,6 +610,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
               if (nodesCOPY[i].textContent.localeCompare('\n') == 0) {
                 karaoke_paragraph = makeEl('div', {'class': 'sq karaoke-paragraph'}, karaoke_text);
                 skippedIds += 1;
+
               }
               else if (i == 0) {
                 var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-highlighted'}, karaoke_paragraph);
@@ -635,6 +641,8 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
           //GO THROUGH NODE COPY LIST AND GET THE COMPLETE TEXT
         }
+
+        $("#karaoke-text").addClass("noscroll");
 
         on('readability.ready', readabilityReadyKaraoke);
 

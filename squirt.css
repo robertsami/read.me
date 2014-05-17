@@ -203,27 +203,36 @@
   padding-right: .7em;
   padding-bottom: .7em;
 }
+
 .sq .karaoke-textbox {
   position: relative;
   margin: 60px;
-  bottom: 0px;
+  top: 10px;
+  overflow-y: scroll;
 }
 
-.sq .karaoke-word {
-    font-size: .8em;
-    color: #FFF;
-    top: 1em;
-    float: left;
-    padding-right: 4px;
-    padding-bottom: 3px;
+.noscroll { overflow: hidden; }
 
+.sq .karaoke-word {
+  font-size: .8em;
+  color: #FFF;
+  top: 1em;
+  float: left;
+  padding-right: 4px;
+  padding-bottom: 3px;
+ }
+
+ .sq .karaoke-align {
+  visibility:hidden;
+  position: absolute;
+  margin: 60px;
+  top: 20px;
  }
 
  .sq .karaoke-paragraph {
     float: left;
     padding-top: 10px;
     padding-bottom: 10px;
-
  }
 
  .sq .karaoke-word:active {
