@@ -42,6 +42,8 @@
   font-family: Georgia, serif;
   box-shadow: 0 2px 10px rgba(0,0,0,.4);
   cursor: none;
+/* this is to keep it above other shit displaying words */
+  z-index: 100;
 }
 
 .sq .modal .error {
@@ -193,6 +195,8 @@
   color: #2d2d2d;
   font-family: Georgia, serif;
   cursor: none;
+/* this is to keep it below other shit displaying words */
+  z-index: 1;
 }
 .sq .karaoke-title {
   color: #f4f4f4;
