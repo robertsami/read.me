@@ -599,12 +599,20 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
                 karaoke_articleWord.setAttribute('id', "karaoke_word" + (i - skippedIds));
 
                 karaoke_articleWord.textContent = nodesCOPY[i].textContent;
+
+                // karaoke_articleWord.click(function() {
+                //   alert(i - skippedIds);
+                // });
               }
               else {
                 var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-word'}, karaoke_paragraph);
                 karaoke_articleWord.setAttribute('id', "karaoke_word" + (i - skippedIds));
 
                 karaoke_articleWord.textContent = nodesCOPY[i].textContent;
+
+                // karaoke_articleWord.click(function() {
+                //   alert(i - skippedIds);
+                // });
               }
             }
 
