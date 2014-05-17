@@ -78,52 +78,22 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
     var lastNode,
         nextNodeTimeoutId;
 
-
-    function getKaroakeWordIndex(article_spot) {
-      var numWordsSeen = 0;
-      var paragraphIndex = 0;
-      var lastNumWordsSeen = 0;
-
-      // dangerous we should check if we're out of the array boundary
-      while (numWordsSeen <= article_spot) {
-        var a = document.getElementById("karaoke-text").children[paragraphIndex++];
-        lastNumWordsSeen = a.children.length;
-        numWordsSeen += a.children.length;
-      }
-
-      var paragraphEl = document.getElementById("karaoke-text").children[paragraphIndex - 1];
-
-      return article_spot - (numWordsSeen - lastNumWordsSeen);
-    }
-
-    function toggleWords(finish, start) {
+    function unhighlightWords(finish, start) {
       console.log(finish);
       console.log(start);
-      var id = "karaoke_word" + start;
-      var a = $("#"+id);
 
-      if (a !== undefined) {
-        a.toggleClass("karaoke-word");
-        a.toggleClass("karaoke-highlighted");
-      }
+      for (var iDiv = start; iDiv >= finish; iDiv--) {
 
-
-      start--;
-      start--;
-      console.log(start);
-      while (finish <= start){
-        var id = "karaoke_word" + finish;
-        var a = $("#"+id);
-
+        console.log("unhighlight " + iDiv);
+        var a = $("#karaoke_word"+iDiv);
         if (a !== undefined) {
-          a.toggleClass("karaoke-word");
-          a.toggleClass("karaoke-highlighted");
+          a.addClass("karaoke-word");
+          a.removeClass("karaoke-highlighted");
         }
-        finish++;   
 
       }
-      article_spot--;
     }
+
     function incrememntNodeIdx(increment){
       var ret = nodeIdx;
       nodeIdx += increment || 1;
@@ -132,7 +102,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       prerender();
       //get the word to highlight
-      var a = $("#karaoke_word"+article_spot);
+      var a = $("#karaoke_word"+nodeIdx);
 
       var karaoke_text_box = $("#karaoke-text");
 
@@ -141,25 +111,39 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       // condition >= 1 is necessary because we set height later
       var offset = a.offset();
 
-      if (article_spot > 5 && offset !== undefined) {
-        var lastDiv = $("#karaoke_word"+(article_spot - 1));
+
+      var lastDiv = $("#karaoke_word"+(nodeIdx - (increment || 1)));
+
+      if (nodeIdx > 5 && offset !== undefined) {
+        console.log("increment " + increment);
+          console.log("spot1 " + article_spot);
+          console.log("spot2 " + nodeIdx);
+          
 
         var change = offset["top"] - lastDiv.offset()["top"];
         // if (change !== 0) {
           console.log("lastHeight " + lastDiv.offset()["top"]);
           console.log("offset " + offset["top"]);
-          console.log("spot " + article_spot);
           console.log("change " + change);
           console.log("textbox top " + $(".karaoke-textbox").offset()["top"]);
         // }
 
         // if there is any scrolling to be done, do it
         
-        $("#karaoke-text").animate({
-          top: "-=" + change
-        }, 10, function() {
-          console.log("hey");
-        });
+        if (increment > 0) {
+          $("#karaoke-text").animate({
+            top: "-=" + change
+          }, 10, function() {
+            console.log("hey");
+          });
+        } else {
+          $("#karaoke-text").animate({
+            top: "+=" + (-1 * change)
+          }, 10, function() {
+            console.log("hey");
+          });
+        }
+        
       }
 
       // a.parent().position({
@@ -172,10 +156,10 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       nodes[0].style.display = 'none';
 
       //a.style.color = "#FFFF66";
-      if (a !== undefined) {
+      if (lastDiv !== undefined) {
         console.log("yo");
-        a.toggleClass("karaoke-word");
-        a.toggleClass("karaoke-highlighted");
+        lastDiv.addClass("karaoke-highlighted");
+        lastDiv.removeClass("karaoke-word");
       }
       else
         console.log('yo');
@@ -232,7 +216,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         nextNode(true);
         article_spot = nodeIdx;
 
-        toggleWords(nodeIdx, start);
+        unhighlightWords(nodeIdx, start);
 
         Keen.addEvent('rewind');
       });
