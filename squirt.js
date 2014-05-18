@@ -319,7 +319,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
     function readabilityFail(){
         Keen.addEvent('readability-fail');
         var modal = document.querySelector('.sq .modal');
-        modal.innerHTML = '<div class="error">Oops! This page is too hard for Squirt to read. We\'ve been notified, and will do our best to resolve the issue shortly.</div>';
+        modal.innerHTML = '<div class="error">Oops! This page is too hard to read. We\'ve been notified, and will do our best to resolve the issue shortly.</div>';
     }
 
     dispatch('squirt.wpm', {value: 400, notForKeen: true});
