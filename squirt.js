@@ -313,7 +313,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
     }
 
     function showInstallLink(){
-      finalWordContainer.innerHTML = "<a class='install' href='/install.html'>Install Squirt</a>";
+      finalWordContainer.innerHTML = "<a class='install' href='/install.html'>Install read.me</a>";
     }
 
     function readabilityFail(){
