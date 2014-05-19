@@ -112,20 +112,20 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
       var offset = a.offset();
 
 
-      var lastDiv = $("#karaoke_word"+(nodeIdx - (increment || 1)));
+      var lastDiv = $("#karaoke_word"+(nodeIdx + (increment || -1)));
 
       if (nodeIdx > 5 && offset !== undefined) {
-        console.log("increment " + increment);
-          console.log("spot1 " + article_spot);
-          console.log("spot2 " + nodeIdx);
+        // console.log("increment " + increment);
+        //   console.log("spot1 " + article_spot);
+        //   console.log("spot2 " + nodeIdx);
           
 
         var change = offset["top"] - lastDiv.offset()["top"];
         // if (change !== 0) {
-          console.log("lastHeight " + lastDiv.offset()["top"]);
-          console.log("offset " + offset["top"]);
-          console.log("change " + change);
-          console.log("textbox top " + $(".karaoke-textbox").offset()["top"]);
+          // console.log("lastHeight " + lastDiv.offset()["top"]);
+          // console.log("offset " + offset["top"]);
+          // console.log("change " + change);
+          // console.log("textbox top " + $(".karaoke-textbox").offset()["top"]);
         // }
 
         // if there is any scrolling to be done, do it
@@ -134,13 +134,13 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
           $("#karaoke-text").animate({
             top: "-=" + change
           }, 10, function() {
-            console.log("hey");
+            // console.log("hey");
           });
         } else {
           $("#karaoke-text").animate({
             top: "+=" + (-1 * change)
           }, 10, function() {
-            console.log("hey");
+            // console.log("hey");
           });
         }
         
@@ -157,7 +157,10 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
 
       //a.style.color = "#FFFF66";
       if (lastDiv !== undefined) {
-        console.log("yo");
+        console.log("div:" + lastDiv);
+
+        console.log("id:" + (nodeIdx - (increment || 1)));
+        console.log("increment:" + increment);
         lastDiv.addClass("karaoke-highlighted");
         lastDiv.removeClass("karaoke-word");
       }
@@ -208,6 +211,7 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         var start = nodeIdx;
         var temp = parseInt(start, 10);
         !sq.paused && clearTimeout(nextNodeTimeoutId);
+        console.log("rewind num: " + -Math.floor(e.seconds * 1000 / intervalMs));
         incrememntNodeIdx(-Math.floor(e.seconds * 1000 / intervalMs));
         while(!nodes[nodeIdx].word.match(/\./) && nodeIdx > 0){
           incrememntNodeIdx(-1);
