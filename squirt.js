@@ -587,6 +587,25 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         
         makeDiv({'class': 'karaoke-align', 'id': 'karaoke-align'}, karaoke);
         
+        function makeTextDiv(paragraph, index, skippedIds) {
+          var karaoke_articleWord;
+          var classString;
+          if (index == 0) {
+            if (skippedIds != 0) {
+              throw message || "improper arguments";
+            }
+            classString = 'sq karaoke-highlighted';
+          } else {
+            classString = 'sq karaoke-word';
+          }
+          
+          karaoke_articleWord = makeEl('div', {'class':classString}, paragraph);
+          karaoke_articleWord.setAttribute('id', "karaoke_word" + (index - skippedIds));
+          karaoke_articleWord.textContent = nodesCOPY[index].textContent;
+
+
+        }
+
         // var handler;
         function readabilityReadyKaraoke(){
           readability.hello();
@@ -602,28 +621,10 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
               if (nodesCOPY[i].textContent.localeCompare('\n') == 0) {
                 karaoke_paragraph = makeEl('div', {'class': 'sq karaoke-paragraph'}, karaoke_text);
                 skippedIds += 1;
-
+              } else {
+                makeTextDiv(karaoke_paragraph, i, skippedIds);
               }
-              else if (i == 0) {
-                var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-highlighted'}, karaoke_paragraph);
-                karaoke_articleWord.setAttribute('id', "karaoke_word" + (i - skippedIds));
-
-                karaoke_articleWord.textContent = nodesCOPY[i].textContent;
-
-                // karaoke_articleWord.click(function() {
-                //   alert(i - skippedIds);
-                // });
-              }
-              else {
-                var karaoke_articleWord = makeEl('div', {'class':'sq karaoke-word'}, karaoke_paragraph);
-                karaoke_articleWord.setAttribute('id', "karaoke_word" + (i - skippedIds));
-
-                karaoke_articleWord.textContent = nodesCOPY[i].textContent;
-
-                // karaoke_articleWord.click(function() {
-                //   alert(i - skippedIds);
-                // });
-              }
+              
             }
 
            
