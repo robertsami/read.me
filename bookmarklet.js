@@ -11,7 +11,7 @@
     if(s.idx != -1){
       s.ampIdx = s.s.indexOf('&', s.idx);
       s.host = s.s.substring(s.idx + 7, s.ampIdx == -1 ? s.s.length : s.ampIdx);
-      s.src = 'http://' + (s.host ? s.host : 'localhost') + ':4000/bm/squirt.js';
+      s.src = 'http://' + (s.host ? s.host : 'localhost') + ':4000/squirt.js';
     }
     document.body.appendChild(s);
   }
