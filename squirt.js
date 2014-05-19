@@ -120,29 +120,33 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         //   console.log("spot2 " + nodeIdx);
           
 
-        var change = offset["top"] - lastDiv.offset()["top"];
-        // if (change !== 0) {
+        var change = offset["top"] - $("#karaoke-align").offset()["top"];
+
           // console.log("lastHeight " + lastDiv.offset()["top"]);
           // console.log("offset " + offset["top"]);
-          // console.log("change " + change);
           // console.log("textbox top " + $(".karaoke-textbox").offset()["top"]);
-        // }
 
-        // if there is any scrolling to be done, do it
+        // if (change !== 0) {
+        //   console.log("change " + change);
+
+          // if there is any scrolling to be done, do it
+          if (change > 0) {
+            $("#karaoke-text").animate({
+              top: "-=" + change
+            }, 1, function() {
+              console.log("hey");
+            });
+          } else {
+            $("#karaoke-text").animate({
+              top: "+=" + (-1 * change)
+            }, 1, function() {
+              console.log("hey");
+            });
+          }
+        // }
+          
+
         
-        if (increment > 0) {
-          $("#karaoke-text").animate({
-            top: "-=" + change
-          }, 10, function() {
-            // console.log("hey");
-          });
-        } else {
-          $("#karaoke-text").animate({
-            top: "+=" + (-1 * change)
-          }, 10, function() {
-            // console.log("hey");
-          });
-        }
         
       }
 
@@ -580,6 +584,8 @@ document.getElementsByTagName('head')[0].appendChild(jQuery);
         // var karaoke_title = makeDiv({'class': 'karaoke-title'}, karaoke);
         //   karaoke_title.innerText = "Full Text!!!!!!!!!!";
         karaoke_text = makeDiv({'class': 'karaoke-textbox', 'id': 'karaoke-text', 'style':'top:10px'}, karaoke);
+        
+        makeDiv({'class': 'karaoke-align', 'id': 'karaoke-align'}, karaoke);
         
         // var handler;
         function readabilityReadyKaraoke(){

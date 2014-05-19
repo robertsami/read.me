@@ -208,6 +208,11 @@
   padding-bottom: .7em;
 }
 
+.sq .karaoke-align {
+  position: relative;
+  top: 30px;
+}
+
 .sq .karaoke-textbox {
   position: relative;
   margin: 60px;
